@@ -19,7 +19,7 @@ const winCon = [
     [3, 4, 5],
     [6, 7, 8]
 ];
-console.log(winCon.winTop);
+console.log(winCon);
 
 
 
@@ -43,28 +43,12 @@ let isWinner = false;
 
 // 	3.1) Store the 9 elements that represent the squares on the page.
 
-const square0 = document.getElementById('sq0');
-const square1 = document.getElementById('sq1');
-const square2 = document.getElementById('sq2');
-const square3 = document.getElementById('sq3');
-const square4 = document.getElementById('sq4');
-const square5 = document.getElementById('sq5');
-const square6 = document.getElementById('sq6');
-const square7 = document.getElementById('sq7');
-const square8 = document.getElementById('sq8');
+const allSquares = document.querySelectorAll('div');
+const message = document.querySelector('h1');
 
-// Solution: const squares + document.quertySelectorAll('div');
-const messageEl = document.getElementById('message');
-const resetB = document.getElementById('reset');
-
-
-/*------Event Listeners------*/
-
-// This is where you should put the event listener
-// for a mouse-click
-square0.addEventListener('click', onClick);
-
-resetB.addEventListener('click', init);
+/*----- event listeners -----*/
+document.querySelector('section').addEventListener('click', theClick);
+document.querySelector('button').addEventListener('click', init);
 
 
 /*------Functions------*/
@@ -72,10 +56,10 @@ resetB.addEventListener('click', init);
 // 4.1) Initialize the state variables:
 init();
 
-function onClick(evt) {
+function theClick(evt) {
     let squareIdx = (evt.target.id.replace('sq', ''));
-        if (boardArray[squareIdx] || winner) return;
-        boardArray[squareIdx]
+        if (boardArray[squareIdx] || whoWinner) return;
+        boardArray[squareIdx] = turn;
         turn *= -1;
         whoWinner = getWinner();
         render();
@@ -87,23 +71,21 @@ function onClick(evt) {
 // FUNCTION 01: Sets and prepares new game (initialaization stage).
 function init() {
     boardArray = [null, null, null, null, null, null, null, null, null];
-    // squareColor.null; // Look later (squareColor.null variable).
-
+    
     // 4.1.2) Initialize whose turn it is to 1 (player 'X'). Player 'O' will be represented by -1.
-    turn = 1 // squareColor.playerX; // Look later.
-    // 4.1.3) Initialize winner to null to represent that there is no winner or tie yet. Winner will hold the player value (1 or -1) if there's a winner. Winner will hold a 'T' if there's a tie. 
+    turn = 1; // squareColor.playerX; // Look later.
     whoWinner === null; // Look later.
-    messageEl.innerText = 'Take turns attemting to get three in a row.';
+    message.innerText = 'Take turns attemting to get three in a row.';
     render();
 }
-
-function getWinner {
-    for (let i = 0; i < winCon.length) {
-    
+// 4.1.3) Initialize winner to null to represent that there is no winner or tie yet. Winner will hold the player value (1 or -1) if there's a winner. Winner will hold a 'T' if there's a tie. 
+function getWinner() {
+    for (let i = 0; i < winCon.length; i++) {
+        if (Math.abs(boardArray[winCon[i][0]] +boardArray[winCon[i][1]] +boardArray[winCon[i][2]]) === 3) return boardArray[winCon[i][0]];
     }
+ if (boardArray.includes(null)) return null;
+ return 'T';
 }
-
-// }
 
 // 4.2) Render those state variables to the page:
 // FUNCTION 02:
@@ -116,10 +98,16 @@ function getWinner {
 // 			4.2.2.3) Otherwise, render a congratulatory message to which player has won - use the color name for the player, converting it to uppercase.
 //     4.3) Wait for the user to click a square.
 
-function render(squareIdx) {
-    if (isWinner === false) {
-        setLetter =  document.getElementById(`sq${squareIdx}`);
-        board[squareIdx] = turn;
+function render() {
+    boardArray.forEach(function(sq, squareIdx) {
+        allSquares[squareIdx].style.background = squareColor[sq];
+    });
+    if (whoWinner === 'T') {
+        message.innerHTML = 'Yikes, another stalemate!';
+    } else if (whoWinner) {
+        message.innerHTML = `Congrats ${squareColor[whoWinner].toUpperCase()}!`;
+    } else {
+        message.innerHTML = `${squareColor[whoWinner].toUpperCase()}'s Turn`;
     }
  }
 
@@ -165,3 +153,35 @@ function render(squareIdx) {
 // winMidV: [1, 4, 7],
 // winMidH: [3, 4, 5],
 // winBottom: [6, 7, 8]
+
+// function render(squareIdx) {
+//     if (isWinner === false) {
+//         setLetter =  document.getElementById(`sq${squareIdx}`);
+//         board[squareIdx] = turn;
+//     }
+//  }
+
+// const square0 = document.getElementById('sq0');
+// const square1 = document.getElementById('sq1');
+// const square2 = document.getElementById('sq2');
+// const square3 = document.getElementById('sq3');
+// const square4 = document.getElementById('sq4');
+// const square5 = document.getElementById('sq5');
+// const square6 = document.getElementById('sq6');
+// const square7 = document.getElementById('sq7');
+// const square8 = document.getElementById('sq8');
+
+// const allSquares = document.querySelectorAll('theSquares');
+
+// Solution: const squares + document.quertySelectorAll('div');
+// const messageEl = document.getElementById('message');
+// const resetB = document.getElementById('reset');
+
+
+/*------Event Listeners------*/
+
+// This is where you should put the event listener
+// for a mouse-click
+// allSquares.addEventListener('click', theClick);
+// document.getElementById('sq0').addEventListener('click', theClick);
+// resetB.addEventListener('click', init);
